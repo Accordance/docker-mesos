@@ -1,6 +1,11 @@
-FROM mesos
-MAINTAINER  Igor Moochnick <igor@igorshare.com>
+FROM mesos_base
+MAINTAINER Igor Moochnick <igor@igorshare.com>
 
-CMD ["--master=zk://zookeeper:2181/mesos", "--log_dir=/var/log/mesos"]
+# Mesos fetcher uses unzip to extract staged zip files
 
-ENTRYPOINT ["mesos-slave"]
+RUN \
+  apt-get install -y unzip && \
+  apt-get clean
+
+EXPOSE 5051
+CMD ["mesos-slave"]
